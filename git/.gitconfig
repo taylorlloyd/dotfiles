@@ -1,0 +1,19 @@
+[user]
+	name = Taylor Lloyd
+[core]
+	editor = vim
+[alias]
+    a = add
+    s = status
+    d = diff
+    b = branch
+    c = commit
+    co = checkout
+    lg = log --color --oneline --graph --decorate --all
+    ps = push
+    pl = pull
+
+    edit-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; vim `f`"
+    add-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; git add `f`"
+[include]
+    path = .gitconfiglocal

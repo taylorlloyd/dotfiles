@@ -27,6 +27,12 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'DavidEGx/ctrlp-smarttabs'
 " Easy to match parenthesis
 Plugin 'kien/rainbow_parentheses.vim'
+
+"Scala Syntax highlighting
+Plugin 'derekwyatt/vim-scala'
+
+" I just discovered CTags. I feel like I've been living under a rock
+Plugin 'majutsushi/tagbar'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -57,6 +63,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+let mapleader = ","
 " Setup our beautiful statusline
 "let g:airline_section_b = '%{strftime("%c")}'
 let g:airline_section_y = 'BN: %{bufnr("%")}'
@@ -105,7 +112,9 @@ inoremap <Left> <NOP>
 inoremap <Right> <NOP>
 
 " Keyboard Tab management
-nnoremap <F2> :CtrlPMixed<CR>
+nnoremap <Leader><Space> :CtrlPMixed<CR>
+nnoremap <Leader>t :CtrlPTag<CR>
+nnoremap <Leader>b :TagbarToggle<CR>
 
 " Clean up trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e

@@ -5,6 +5,7 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+alias g='git'
 alias ga='git add'
 alias gs='git status'
 alias gc='git commit'
