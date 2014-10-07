@@ -17,3 +17,5 @@
     add-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; git add `f`"
 [include]
     path = .gitconfiglocal
+[push]
+	default = matching
