@@ -10,3 +10,8 @@ echo "Installing ViM Settings"
 cd vim
 ./setup.sh
 cd ..
+# Load tmux settings
+echo "Installing tmux Settings"
+cd tmux
+./setup.sh
+cd ..

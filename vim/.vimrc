@@ -20,6 +20,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'tomasr/molokai'
 " Add autocompletion
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
 " Better Statusline
 Plugin 'bling/vim-airline'
 " File management
@@ -27,13 +28,15 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'DavidEGx/ctrlp-smarttabs'
 " Easy to match parenthesis
 Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'davidhalter/jedi-vim'
 
 "Scala Syntax highlighting
 Plugin 'derekwyatt/vim-scala'
 
 " I just discovered CTags. I feel like I've been living under a rock
 Plugin 'majutsushi/tagbar'
+
+"Enable tmux compatibility
+Plugin 'christoomey/vim-tmux-navigator'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required

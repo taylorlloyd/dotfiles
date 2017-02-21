@@ -1,5 +1,12 @@
 # .bashrc
 
+# Launch tmux if not started
+if [[ "$TERM" != "screen-256color" ]]
+then
+  tmux attach-session -t "$USER"
+  tmux new-session -s "$USER"
+fi
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -20,3 +27,7 @@ if [ -a ~/.bashrc.local ]
     then
         . ~/.bashrc.local
 fi
+
+# 256 color support
+[ -z "$TMUX" ] && export TERM=xterm-256color
+
