@@ -10,10 +10,33 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+" File Management
+Plugin 'kien/ctrlp.vim'
+Plugin 'DavidEGx/ctrlp-smarttabs'
+Plugin 'scrooloose/nerdtree'
+
+" Utility plugins
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'BufOnly.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'gilsondev/searchtasks.vim'
+Plugin 'jakedouglas/exuberant-ctags'
+Plugin 'Townk/vim-autoclose'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'vim-syntastic/syntastic'
+
+" Writing
+Plugin 'reedes/vim-pencil'
+Plugin 'tpope/vim-markdown'
+Plugin 'reedes/vim-lexical'
+
+" Git
+Plugin 'tpope/vim-fugitive'
+Plugin 'gregsexton/gitv'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
 " plugin from http://vim-scripts.org/vim/scripts.html
 Plugin 'L9'
 Plugin 'airblade/vim-gitgutter'
@@ -23,17 +46,10 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 " Better Statusline
 Plugin 'bling/vim-airline'
-" File management
-Plugin 'kien/ctrlp.vim'
-Plugin 'DavidEGx/ctrlp-smarttabs'
-" Easy to match parenthesis
-Plugin 'kien/rainbow_parentheses.vim'
 
 "Scala Syntax highlighting
 Plugin 'derekwyatt/vim-scala'
 
-" I just discovered CTags. I feel like I've been living under a rock
-Plugin 'majutsushi/tagbar'
 
 "Enable tmux compatibility
 Plugin 'christoomey/vim-tmux-navigator'
@@ -123,6 +139,18 @@ nnoremap <Leader>b :TagbarToggle<CR>
 " Clean up trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
 
+" Open NERDTree if vim was invoked without a file
+autocmd StdinReadPre * let:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Use pencil in latex files
+augroup pencil
+  autocmd!
+  autocmd FileType markdown,mkd call pencil#init()
+  autocmd FileType text         call pencil#init()
+  autocmd FileType plaintex,tex call pencil#init()
+                            \ | call lexical#init()
+augroup END
 syntax enable
 
 filetype plugin indent on
@@ -131,5 +159,7 @@ set wildmenu
 set wildmode=list:longest
 
 set backspace=indent,eol,start
+
+set t_ut=
 
 colorscheme molokai
