@@ -28,6 +28,11 @@ if [ -a ~/.bashrc.local ]
         . ~/.bashrc.local
 fi
 
+# provide 'open' a la OSX
+open() {
+    xdg-open $1 > /dev/null 2> /dev/null &
+}
+
 # 256 color support
 [ -z "$TMUX" ] && export TERM=xterm-256color
 
