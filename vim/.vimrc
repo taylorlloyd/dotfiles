@@ -25,6 +25,7 @@ Plugin 'jakedouglas/exuberant-ctags'
 Plugin 'Townk/vim-autoclose'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'vim-syntastic/syntastic'
+Plugin 'easymotion/vim-easymotion'
 
 " Writing
 Plugin 'reedes/vim-pencil'
@@ -142,6 +143,9 @@ autocmd BufWritePre * :%s/\s\+$//e
 " Open NERDTree if vim was invoked without a file
 autocmd StdinReadPre * let:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Make YouCompleteMe and vim-autoclose play nice
+let g:AutoClosePumvisible = {"ENTER": "<C-Y>", "ESC": "<ESC>"}
 
 " Use pencil in latex files
 augroup pencil
