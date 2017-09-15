@@ -77,11 +77,17 @@ set autoread
 set backupdir=~/.vim/backup
 set directory=~/.vim/backupf
 
+" Persistent Undo
+set undofile
+set undodir=~/.vim/undo
+set undolevels=1000
+set undoreload=10000
+
 set smarttab
 set autoindent
 set smartindent
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
 
 let mapleader = ","

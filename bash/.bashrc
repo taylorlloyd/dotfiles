@@ -13,11 +13,8 @@ if [ -f /etc/bashrc ]; then
 fi
 
 alias g='git'
-alias ga='git add'
-alias gs='git status'
-alias gc='git commit'
-alias gl='git log --oneline --graph --decorate --all --color'
-alias gp='git push'
+
+alias ssh='autossh'
 
 # Vi mode shell
 set -o vi
@@ -36,3 +33,11 @@ open() {
 # 256 color support
 [ -z "$TMUX" ] && export TERM=xterm-256color
 
+# Powerline-style shell
+function _update_ps1() {
+    PS1="$(~/git/powerline-shell/powerline-shell.py $? 2> /dev/null)"
+}
+
+if [ "$TERM" != "linux" ]; then
+    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+fi
