@@ -18,42 +18,37 @@ Plugin 'scrooloose/nerdtree'
 " Utility plugins
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'majutsushi/tagbar'
-Plugin 'BufOnly.vim'
 Plugin 'godlygeek/tabular'
-Plugin 'gilsondev/searchtasks.vim'
-Plugin 'jakedouglas/exuberant-ctags'
 Plugin 'Townk/vim-autoclose'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'easymotion/vim-easymotion'
+Plugin 'Valloric/YouCompleteMe'
 
 " Writing
 Plugin 'reedes/vim-pencil'
 Plugin 'tpope/vim-markdown'
 Plugin 'reedes/vim-lexical'
 
+" Golang
+Plugin 'fatih/vim-go'
+let g:go_version_warning = 0
+
+" Typescript
+Plugin 'leafgarland/typescript-vim'
+
+" Ruby
+Plugin 'vim-ruby/vim-ruby'
+
 " Git
 Plugin 'tpope/vim-fugitive'
 Plugin 'gregsexton/gitv'
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-" plugin from http://vim-scripts.org/vim/scripts.html
 Plugin 'L9'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tomasr/molokai'
-" Add autocompletion
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'rdnetto/YCM-Generator'
 " Better Statusline
 Plugin 'bling/vim-airline'
 
-"Scala Syntax highlighting
-Plugin 'derekwyatt/vim-scala'
-
-
-"Enable tmux compatibility
-Plugin 'christoomey/vim-tmux-navigator'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -95,6 +90,9 @@ let mapleader = ","
 "let g:airline_section_b = '%{strftime("%c")}'
 let g:airline_section_y = 'BN: %{bufnr("%")}'
 
+" Fix vim-autoclose and YouCompleteMe not playing nice together
+let g:AutoClosePumvisible = {"ENTER": "", "ESC": ""}
+
 set laststatus=2
 
 " Show Buffer Tabs
@@ -127,6 +125,69 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
+" Tagbar for go
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+    \ }
+
+" Go syntax highlighting
+let g:go_highlight_types = 1
+
+" Auto-add and remove imports on save
+let g:go_fmt_command = "goimports"
+
+" Always append periods to comments in go
+autocmd BufWritePre *.go :%s/^\(\s*\)\/\/\(.*[^.?!,]\)$/\1\/\/\2./e
+
+" Better java syntax highlighting
+let g:syntastic_mode_map = {
+  \ "mode": "active",
+  \ "passive_filetypes": ["java"] }
+
+" YCM language semantic support
+  let g:ycm_semantic_triggers =  {
+    \   'c': ['->', '.'],
+    \   'objc': ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+    \            're!\[.*\]\s'],
+    \   'ocaml': ['.', '#'],
+    \   'cpp,cuda,objcpp': ['->', '.', '::'],
+    \   'perl': ['->'],
+    \   'php': ['->', '::'],
+    \   'cs,d,elixir,go,groovy,java,javascript,julia,perl6,python,scala,typescript,vb': ['.'],
+    \   'java,jsp' : ['.'],
+    \   'ruby,rust': ['.', '::'],
+    \   'lua': ['.', ':'],
+    \   'erlang': [':'],
+    \ }
+
+" Enable triggering completion easily
+inoremap <C-Space> <C-x><C-o>
+inoremap <C-@> <C-Space>
+
 " Let's learn not to use dem arrow keys
 nnoremap <Up> <NOP>
 nnoremap <Down> <NOP>
@@ -145,22 +206,12 @@ nnoremap <Leader>b :TagbarToggle<CR>
 
 " Clean up trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 
 " Open NERDTree if vim was invoked without a file
 autocmd StdinReadPre * let:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-" Make YouCompleteMe and vim-autoclose play nice
-let g:AutoClosePumvisible = {"ENTER": "<C-Y>", "ESC": "<ESC>"}
-
-" Use pencil in latex files
-augroup pencil
-  autocmd!
-  autocmd FileType markdown,mkd call pencil#init()
-  autocmd FileType text         call pencil#init()
-  autocmd FileType plaintex,tex call pencil#init()
-                            \ | call lexical#init()
-augroup END
 syntax enable
 
 filetype plugin indent on

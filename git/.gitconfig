@@ -1,7 +1,10 @@
 [user]
 	name = Taylor Lloyd
+	email = tjlloyd@amazon.com
 [core]
 	editor = vim
+	pager = less -FMRiX
+	excludesfile = /Users/tjlloyd/.gitignore
 [alias]
     a = add
     s = status
@@ -15,7 +18,10 @@
 
     edit-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; vim `f`"
     add-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; git add `f`"
+	dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
 [include]
     path = .gitconfiglocal
 [push]
 	default = matching
+[color]
+	ui = auto
