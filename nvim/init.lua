@@ -52,11 +52,20 @@ packer.startup(function()
   use 'sheerun/vim-polyglot'
   use 'neovim/nvim-lspconfig'
   use 'nvim-lua/completion-nvim'
-
-  use 'tamelion/neovim-molokai'
-
+  use 'lewis6991/gitsigns.nvim'
+  use 'folke/tokyonight.nvim'
+  use({
+  "jackMort/ChatGPT.nvim",
+    requires = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
+})
   end
 )
+
+vim.cmd[[colorscheme tokyonight]]
 
 local configs = require'nvim-treesitter.configs'
 
@@ -78,10 +87,11 @@ local default_config = {
 }
 
 lspconfig.clangd.setup {
-  filetypes = { "c", "cpp", "cc", "cu", "cl", "h", "hpp" },
+  filetypes = { "c", "cpp", "cc", "cuda", "cl", "h", "hpp" },
   cmd = { "/Users/tjlloyd/homebrew/opt/llvm/bin/clangd" },
   an_attach = custom_on_attach
 }
+local chatgpt = require("chatgpt").setup()
 
 local key_mapper = function(mode, key, result)
   vim.api.nvim_set_keymap(
