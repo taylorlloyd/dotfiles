@@ -62,6 +62,7 @@ packer.startup(function()
       "nvim-telescope/telescope.nvim"
     }
 })
+  use 'ErichDonGubler/lsp_lines.nvim'
   end
 )
 
@@ -102,6 +103,12 @@ local key_mapper = function(mode, key, result)
   )
 end
 
+-- Prefer lsp_lines to the existing text diagnostics
+require('lsp_lines').setup()
+vim.diagnostic.config({
+    virtual_text = false,
+})
+
 key_mapper('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')
 key_mapper('n', 'gD', ':lua vim.lsp.buf.declaration()<CR>')
 key_mapper('n', 'gi', ':lua vim.lsp.buf.implementation()<CR>')
@@ -111,7 +118,12 @@ key_mapper('n', 'gr', ':lua vim.lsp.buf.references()<CR>')
 key_mapper('n', 'gt', ':lua vim.lsp.buf.type_definition()<CR>')
 key_mapper('n', 'K', ':lua vim.lsp.buf.hover()<CR>')
 key_mapper('n', '<c-k>', ':lua vim.lsp.buf.signature_help()<CR>')
-key_mapper('n', '<leader>af', ':lua vim.lsp.buf.code_action()<CR>')
+key_mapper('n', 'F', ':lua vim.lsp.buf.code_action()<CR>')
 key_mapper('n', '<leader>rn', ':lua vim.lsp.buf.rename()<CR>')
+
+key_mapper('n', 'ff', ":lua require'telescope.builtin'.find_files()<CR>")
+key_mapper('n', 'fg', ":lua require'telescope.builtin'.git_files()<CR>")
+key_mapper('n', 'fs', ":lua require'telescope.builtin'.live_grep()<CR>")
+key_mapper('n', 'fd', ":lua require'telescope.builtin'.diagnostics()<CR>")
 
 vim.g.colors_name = 'molokai'
