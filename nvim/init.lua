@@ -63,6 +63,11 @@ packer.startup(function()
     }
 })
   use 'ErichDonGubler/lsp_lines.nvim'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-cmdline'
+  use 'hrsh7th/nvim-cmp'
   end
 )
 
@@ -79,6 +84,7 @@ configs.setup {
 
 local lspconfig = require'lspconfig'
 local completion = require'completion'
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local function custom_on_attach(client)
   print('Attaching to ' .. client.name)
   completion.on_attach(client)
@@ -87,11 +93,17 @@ local default_config = {
   on_attach = custom_on_attach,
 }
 
+-- Setup LSP configurations
+
 lspconfig.clangd.setup {
   filetypes = { "c", "cpp", "cc", "cuda", "cl", "h", "hpp" },
   cmd = { "/Users/tjlloyd/homebrew/opt/llvm/bin/clangd" },
-  an_attach = custom_on_attach
+  an_attach = custom_on_attach,
+  capabilities = capabilities
 }
+
+-- Setup ChatGPT integrations
+--
 local chatgpt = require("chatgpt").setup()
 
 local key_mapper = function(mode, key, result)
@@ -108,6 +120,67 @@ require('lsp_lines').setup()
 vim.diagnostic.config({
     virtual_text = false,
 })
+
+-- Setup Autocomplete
+local cmp = require('cmp')
+cmp.setup({
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      end,
+    },
+    window = {
+      -- completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ["<Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_next_item()
+        else
+          fallback()
+        end
+      end, {"i", "s"}),
+    }),
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'vsnip' }, -- For vsnip users.
+      -- { name = 'luasnip' }, -- For luasnip users.
+      -- { name = 'ultisnips' }, -- For ultisnips users.
+      -- { name = 'snippy' }, -- For snippy users.
+    }, {
+      { name = 'buffer' },
+    })
+  })
+  -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline({ '/', '?' }, {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+
+
+  
 
 key_mapper('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')
 key_mapper('n', 'gD', ':lua vim.lsp.buf.declaration()<CR>')
